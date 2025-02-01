@@ -13,8 +13,8 @@ type gaugeCollector struct{}
 
 var (
 	myGauge = prometheus.NewGauge(prometheus.GaugeOpts{
-		Name: "my_count",
-		Help: "my counter help",
+		Name: "enabled",
+		Help: "if 1, access to youtube is enabled. if 0, not.",
 	})
 	ls = make([]int, 0, 10)
 )
@@ -48,7 +48,7 @@ func main() {
 	var g gaugeCollector
 	prometheus.MustRegister(g)
 
-	http.HandleFunc("/", handler)
+	http.HandleFunc("/enabled", handler)
 	http.Handle("/metrics", promhttp.Handler())
 	log.Fatal(http.ListenAndServe(*addr, nil))
 }
